@@ -167,11 +167,7 @@ AC OFF DOOR OFF
 
 ## 👨‍💻 Developed By
 
-**TEAM SAM**
-
-- 👨‍💻 Arduino Programming: [Your Name]
-- 📐 Circuit Design: [Team Member]
-- 💡 Logic & Simulation: [Team Member]
+Sajeeb Sarkar
 
 > 🏫 KUET – Khulna University of Engineering & Technology  
 > 🇧🇩 Department of Electrical & Electronic Engineering (EEE)
