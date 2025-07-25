@@ -1,7 +1,9 @@
-# Smart-room-automation-system-project-in-TinkerCAD
-# 🏠 Smart Room Automation System Using Arduino
+# 🏠 Smart Room Automation System Using Arduino – TinkerCAD Project
 
 This Arduino-based **Smart Room Automation System** dynamically manages your room environment using sensors and actuators. It performs real-time temperature monitoring, automatic door operation, fan and AC indicator control, and issues high-temperature warnings using a buzzer and LCD display.
+
+🔗 **Live Tinkercad Simulation:**  
+👉 [Click here to open simulation](https://www.tinkercad.com/things/3W6tHAb6bsD-smart-room-automation-system-?sharecode=9gMvSxfNsFJOKDTjLc7XW1A-RbudFWR5cnX_vT0V_d0)
 
 ---
 
@@ -53,32 +55,35 @@ This system mimics a miniature **Smart Home Environment Controller**. It aims to
 | 24 ≤ T ≤ 30     | AC on (LED ON), Door closed                | `AC ON  DOOR OFF`        | ❌     | Closed (90°)  | ✅ (short beep) |
 | > 30            | AC error, Door open, Fan on, 3s buzzer     | `AC ERROR DOOR ON`       | ✅     | Open (0°)     | ✅ (3 sec) |
 
-### Brightness Control (when AC is off):
-- If room is dark (LDR < 600), gradually **increase** AC LED brightness.
-- If room is bright (LDR ≥ 600), **decrease** brightness.
-- Brightness range: `0–255` in steps of `10`.
+---
+
+## 💡 Brightness Control (LDR + PWM)
+
+- If room is dark (`LDR < 600`): **Gradually increase** AC LED brightness.
+- If room is bright: **Decrease** brightness.
+- Brightness changes in steps of `10`, max value `255`.
 
 ---
 
 ## 🔌 Pin Configuration
 
-| Pin | Connected To             |
-|-----|--------------------------|
-| A0  | LM35 Temperature Sensor  |
-| A1  | LDR Sensor               |
-| 2-5 | LCD (D7 to D4)           |
-| 6   | AC LED (PWM)             |
-| 7   | Fan                      |
-| 8   | Buzzer                   |
-| 9   | Servo Motor              |
-| 11  | LCD EN                   |
-| 12  | LCD RS                   |
+| Arduino Pin | Connected To             |
+|-------------|--------------------------|
+| A0          | LM35 Temperature Sensor  |
+| A1          | LDR Sensor               |
+| 2–5         | LCD (D7 to D4)           |
+| 6           | AC LED (PWM)             |
+| 7           | Fan                      |
+| 8           | Buzzer                   |
+| 9           | Servo Motor              |
+| 11          | LCD Enable (EN)          |
+| 12          | LCD Register Select (RS) |
 
 ---
 
 ## 💻 Code Highlights
 
-- **Servo Movement Function:** Smooth door transitions
+### 🧭 Servo Movement Function
 ```cpp
 void moveServoSmooth(int fromAngle, int toAngle) {
   if (fromAngle < toAngle) {
@@ -95,27 +100,30 @@ void moveServoSmooth(int fromAngle, int toAngle) {
 }
 ```
 
-- **Temperature Calculation:**
+### 🌡️ Temperature Reading Logic
 ```cpp
-float voltage = analogRead(tempPin) * 5.0 / 1023.0;
+int tempVal = analogRead(tempPin);
+float voltage = tempVal * 5.0 / 1023.0;
 temperatureC = (voltage - 0.5) * 100.0;
 ```
 
-- **Buzzer Trigger Logic:**
+### 🔊 Buzzer Alert Logic
 ```cpp
 if (temperatureC > 30.0 && !buzzerTriggered) {
   buzzerTriggered = true;
-  digitalWrite(buzzerPin, HIGH);
+  buzzerOn = true;
   buzzerStartTime = millis();
+  digitalWrite(buzzerPin, HIGH);
 }
-if (buzzerOn && millis() - buzzerStartTime >= 3000) {
+if (buzzerOn && (millis() - buzzerStartTime >= 3000)) {
   digitalWrite(buzzerPin, LOW);
+  buzzerOn = false;
 }
 ```
 
 ---
 
-## 📟 Sample LCD Display
+## 📟 LCD Sample Output
 
 ```
 Temp: 26.5 C
@@ -132,35 +140,28 @@ AC OFF DOOR OFF
 ## 🧪 How to Use
 
 ### 1. Wiring
-- Connect all components to your Arduino board as per the pin layout.
-- Power your Arduino via USB or external power source.
+- Follow the pin configuration table above.
+- Ensure power supply is stable for servo motor movement.
 
-### 2. Uploading the Code
+### 2. Upload Code
 - Open Arduino IDE.
-- Install `LiquidCrystal` and `Servo` libraries (usually preinstalled).
-- Upload the sketch to the board.
+- Load the `.ino` file.
+- Upload to Arduino UNO.
 
-### 3. Testing
-- Use a lighter/heater to test LM35 response.
-- Cover/uncover the LDR to test LED dimming.
-- Observe LCD and Serial Monitor.
+### 3. Test & Simulate
+- In Tinkercad, adjust LM35 temperature slider.
+- Cover LDR sensor to simulate darkness.
+- Observe fan, buzzer, door, LCD, and LED behavior.
 
----
 
-## 🎥 Demo Video (Optional)
 
-> Embed a demo video or upload GIFs/images here.
+## 🚀 Future Enhancements
 
----
-
-## 🔧 Possible Upgrades
-
-- WiFi/Bluetooth connectivity (e.g., ESP8266)
-- DHT11 sensor for both Temp & Humidity
-- Real-time clock (RTC) module for scheduling
-- Mobile app integration
-- Voice or gesture control
-- Firebase or cloud logging
+- 📶 Add WiFi/Bluetooth control (ESP8266/HC-05)
+- 📱 Android/iOS App Integration
+- 🌐 Cloud logging with Firebase
+- ⏰ Real-Time Clock (RTC) for timed events
+- 🎤 Voice Control using Google Assistant/Alexa
 
 ---
 
@@ -170,12 +171,16 @@ AC OFF DOOR OFF
 
 - 👨‍💻 Arduino Programming: [Your Name]
 - 📐 Circuit Design: [Team Member]
-- 💡 Idea & Logic: [Team Member]
+- 💡 Logic & Simulation: [Team Member]
 
-> Proudly developed at KUET – Bangladesh 🇧🇩
+> 🏫 KUET – Khulna University of Engineering & Technology  
+> 🇧🇩 Department of Electrical & Electronic Engineering (EEE)
 
 ---
 
-## 📃 License
+## 📄 License
 
-MIT License. Free to use, share, and improve.
+This project is licensed under the MIT License – feel free to use, modify, and share!
+
+---
+
